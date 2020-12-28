@@ -1,0 +1,20 @@
+{
+  "name": "socialMedia",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/divyanshg/socialMedia.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/divyanshg/socialMedia/issues"
+  },
+  "homepage": "https://github.com/divyanshg/socialMedia#readme"
+}

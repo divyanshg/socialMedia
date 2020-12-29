@@ -2,9 +2,9 @@
   "name": "socialMedia",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./bin/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "devStart": "nodemon ./bin/app.js"
   },
   "repository": {
     "type": "git",
@@ -16,5 +16,22 @@
   "bugs": {
     "url": "https://github.com/divyanshg/socialMedia/issues"
   },
-  "homepage": "https://github.com/divyanshg/socialMedia#readme"
+  "homepage": "https://github.com/divyanshg/socialMedia#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "express-flash": "0.0.2",
+    "express-session": "^1.17.1",
+    "method-override": "^3.0.0",
+    "mongodb": "^3.6.3",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "time-ago": "^0.2.1",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "nodemon": "^2.0.6"
+  }
 }

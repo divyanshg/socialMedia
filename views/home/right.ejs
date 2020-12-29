@@ -1,0 +1,62 @@
+<div class="rightSideNav flex flex-wrap -m-2 pt-2">
+    <div class="p-2 w-full">
+        <input type="text" class="theme-gray-200 rounded-full py-2 px-3 w-full" placeholder="Search Babble">
+    </div>
+    <% if(people.length != 0){ %>
+    <div class="py-2 w-full pb-0 theme-gray-200 rounded-lg h-auto text-left">
+        <div class="flex flex-wrap">
+            <div class="w-full border-b theme-border-gray-300 pb-1">
+                <div class="inner py-2">
+                    <h1 class="text-lg theme-text font-bold">&nbsp;&nbsp;Who to follow</h1>
+                </div>
+            </div>
+            <% people.forEach(person => { %>
+            <% if(person.username == user.username) return %>
+            <div class="w-full border-b theme-border-gray-300 pb-1 h-20 hover-theme cursor-pointer flex py-4 px-2">
+                <img src="<%= person.profile_pic %>" alt="" class="w-10 h-10 rounded-ful">
+                <div class="inner p-2 -mt-3 ml-3 w-full">
+                    <h1 class="theme-text font-semibold"><%= person.firstname + " " + person.lastname %></h1>
+                    <h1 class="text-sm text-gray-500">@<%= person.username %></h1>
+                </div>
+                <button onclick="follow('<%= person.id %>', '<%= person.username %>')"
+                    class="bg-transparent text-indigo-500 rounded-lg h-8 px-3 py-1 mt-1 font-semibold border border-indigo-500 hover:bg-indigo-500 hover:text-white">Follow</button>
+            </div>
+            <% }) %>
+            <div class="w-full p-2 cursor-pointer">
+                <div class="inner p-2">
+                    <h1 class="text-sm text-gray-500 text-gray-600">SHOW MORE</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% } %>
+    <div class="p-2 w-full pt-3 mt-3 text-center flex text-sm">
+        <a class="text-gray-500">Terms</a>
+        &nbsp;
+        &nbsp;
+        <a class="text-gray-500">Privacy Policy</a>
+        &nbsp;
+        &nbsp;
+        <a class="text-gray-500">Cookies</a>
+        &nbsp;
+        &nbsp;
+        <a class="text-gray-500">Ads info</a>
+    </div>
+    <br>
+    &nbsp;
+    <a class="text-gray-500 text-sm px-1"> © 2020 Babble Inc.</a>
+</div>
+<script>
+    function follow(id, username) {
+        fetch(`/api/v1/follow/${id}/${username}`, {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+</script>

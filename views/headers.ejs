@@ -1,0 +1,137 @@
+<link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css" />
+<link rel="icon" href="https://tailwindui.com/img/logos/workflow-mark-on-white.svg">
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --gray-200: #edf2f7;
+        --text-color: black;
+        --main-bg: #fff;
+        --border-gray-300: #e2e8f0;
+        --hover-theme: #edf2f7;
+        --hover-purple: #e9d8fd;
+        --to-delay:0ms;
+    }
+
+    ::-webkit-scrollbar-track {
+        border-radius: 0px;
+        background-color: #fff;
+    }
+
+    ::-webkit-scrollbar {
+        width: 0px;
+        background-color: #fff;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        border-radius: 0px;
+        background-color: #d8d8d8;
+    }
+
+    #progress {
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: -6px;
+        width: 1%;
+        height: 3px;
+        -moz-border-radius: 1px;
+        -webkit-border-radius: 1px;
+        border-radius: 1px;
+        -moz-transition: width 600ms ease-out, opacity var(--to-delay) linear;
+        -ms-transition: width 600ms ease-out, opacity var(--to-delay) linear;
+        -o-transition: width 600ms ease-out, opacity var(--to-delay) linear;
+        -webkit-transition: width 600ms ease-out, opacity var(--to-delay) linear;
+        transition: width var(--to-delay) ease-out, opacity var(--to-delay) linear;
+    }
+
+    #progress b,
+    #progress i {
+        position: absolute;
+        top: 0;
+        height: 3px;
+        -moz-box-shadow: #777777 1px 0 6px 1px;
+        -ms-box-shadow: #777777 1px 0 6px 1px;
+        -webkit-box-shadow: #777777 1px 0 6px 1px;
+        box-shadow: #777777 1px 0 6px 1px;
+        -moz-border-radius: 100%;
+        -webkit-border-radius: 100%;
+        border-radius: 100%;
+    }
+
+    #progress b {
+        clip: rect(-6px, 22px, 14px, 10px);
+        opacity: 0.6;
+        width: 20px;
+        right: 0;
+    }
+
+    #progress i {
+        clip: rect(-6px, 90px, 14px, -6px);
+        opacity: 0.6;
+        width: 180px;
+        right: -80px;
+    }
+
+    @media screen and (max-width: 900px) {
+
+        .leftSideNav,
+        .rightSideNav {
+            display: none !important;
+        }
+
+        .tweetContainer {
+            width: 100% !important;
+        }
+    }
+
+    .theme-text {
+        color: var(--text-color);
+        -webkit-transition: color var(--to-delay) linear;
+        -ms-transition: color var(--to-delay) linear;
+        transition: color var(--to-delay) linear;
+    }
+
+    .theme-bg {
+        background-color: var(--main-bg);
+        color: var(--text-color) -webkit-transition: background-color var(--to-delay) linear;
+        -ms-transition: background-color var(--to-delay) linear;
+        transition: background-color var(--to-delay) linear;
+    }
+
+    .theme-gray-200 {
+        background-color: var(--gray-200);
+        -webkit-transition: background-color var(--to-delay) linear;
+        -ms-transition: background-color var(--to-delay) linear;
+        transition: background-color var(--to-delay) linear;
+    }
+
+    .theme-border-gray-300 {
+        border-color: var(--border-gray-300);
+        -webkit-transition: border-color var(--to-delay) linear;
+        -ms-transition: border-color var(--to-delay) linear;
+        transition: border-color var(--to-delay) linear;
+    }
+
+    .hover-theme:hover {
+        background-color: var(--hover-theme);
+        -webkit-transition: background-color var(--to-delay) linear;
+        -ms-transition: background-color var(--to-delay) linear;
+        transition: background-color var(--to-delay) linear;
+    }
+
+    .purple-hover:hover {
+        background-color: var(--hover-purple);
+        -webkit-transition: background-color var(--to-delay) linear;
+        -ms-transition: background-color var(--to-delay) linear;
+        transition: background-color var(--to-delay) linear;
+    }
+
+    .post:hover {
+        background-color: var(--hover-theme);
+        -webkit-transition: background-color var(--to-delay) linear;
+        -ms-transition: background-color var(--to-delay) linear;
+        transition: background-color var(--to-delay) linear;
+    }
+</style>

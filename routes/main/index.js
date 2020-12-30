@@ -20,7 +20,12 @@ router.get('/', checkAuthenticated, async (req, res) => {
 
             var posts = [];
             for (var i = 0; i < users.length; i++) {
-                if (req.user.following.find(u => u.id == users[i].id)) {
+                if (users[i].id == req.user.id) {
+                    for (var j = 0; j < users[i].posts.length; j++) {
+                        users[i].posts[j].timeago = ta.ago(users[i].posts[j].createdAt);
+                        posts.push(users[i].posts[j]);
+                    }
+                } else if (req.user.following.find(u => u.id == users[i].id)) {
                     for (var j = 0; j < users[i].posts.length; j++) {
                         users[i].posts[j].timeago = ta.ago(users[i].posts[j].createdAt);
                         posts.push(users[i].posts[j]);

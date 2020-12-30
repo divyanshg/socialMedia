@@ -1,0 +1,136 @@
+<title>Babble</title>
+<%- include('../headers') %>
+<style>
+    .heart {
+        cursor: pointer;
+        height: 50px;
+        width: 50px;
+        margin-top: -10px;
+        background-image: url('https://abs.twimg.com/a/1446542199/img/t1/web_heart_animation.png');
+        background-repeat: no-repeat;
+        background-size: 2900%;
+    }
+
+    .heart:hover {
+        background-position: right;
+    }
+
+    .is_animating {
+        animation: heart-burst .8s steps(28) 1;
+    }
+
+    @keyframes heart-burst {
+        from {
+            background-position: left;
+        }
+
+        to {
+            background-position: right;
+        }
+    }
+</style>
+
+<body class="bg-white w-full">
+    <section class="theme-text body-font relative">
+        <div class="container flex px-5 py-1 mx-auto h-full">
+            <%- include('./left.ejs') %>
+            <div class="tweetContainer lg:w-1/2 md:w-2/3 mx-auto border-r border-l theme-border-gray-300 px-2 py-2 h-full
+                overflow-y-auto overflow-x-hidden">
+                <div class="flex flex-wrap -m-2">
+                    <div class="p-2 w-full border-b theme-border-gray-300">
+                        <h1 class="text-xl theme-text font-bold">Post</h1>
+                    </div>
+                    <div class="postsContainer w-full h-auto">
+                        <div class="post px-2 w-full h-auto border-b theme-border-gray-300 cursor-pointer mt-4">
+                            <div class="postHeader flex w-full pb-2 pt-2 ">
+                                <img src="<%= post.upp %>" alt="" class="h-12 w-12 rounded-full">
+                                <a href="/u/<%= post.author %>" class="block py-2 ml-2 text-center theme-text rounded-lg hover:border-purple-light hover:bg-grey-lighter text-base
+                                font-semibold"><%= post.author %></a>
+                                <div
+                                    class="float-right font-bold cursor-pointer hover:text-blue-400 rounded-full mt-3 ml-2 align-middle text-center">
+                                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="postBody w-full ml-6 px-2 -mt-6">
+                                <p class="w-11/12 text-left"><%- post.caption %></p>
+                                <% if(post.static_url != ''){ %>
+                                <img src="<%= post.static_url %>" alt="" class="w-11/12 h-auto rounded-lg mt-2"
+                                    loading="lazy">
+                                <% } %>
+                            </div>
+                            <div class="postActions w-full mt-3 px-2">
+                                <ul class="w-full flex">
+                                    <li class="mx-12 rounded-full text-center cursor-pointer hover:text-blue-200 flex"
+                                        onclick="openCommentModal('<%= post._id %>', '<%= post.upp %>', '<%= post.author %>', '<%= post.caption %>')">
+                                        C
+                                        <span class="text-gray-500  ml-2" id="_commentsCount"></span>
+                                    </li>
+                                    <li
+                                        class="mx-12 rounded-full p-1 text-center cursor-pointer hover:text-blue-400 flex">
+                                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                                        </svg>
+                                        <span class="text-gray-500 -mt-1 ml-2"></span>
+                                    </li>
+                                    <li class="mx-12 rounded-full text-center cursor-pointer flex">
+                                        <div class="heart"
+                                            style="background-position: <% if(post.likes.find(like => like.username == user.username)) { %> right <% }else{ %> left <% } %>;"
+                                            id="post_<%= post._id %>_<%= post.author %>"
+                                            data-liked="<% if(post.likes.find(like => like.username == user.username)) { %>true<% }else{ %>false<% } %>">
+                                        </div>
+                                        <span class="text-gray-500 mt-1 -ml-2"
+                                            id="<%= post._id %>_likesCount"><%= post.likes.length %></span>
+                                    </li>
+                                    <li
+                                        class="mx-12 rounded-full text-center cursor-pointer hover:text-orange-400 flex">
+                                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                        </svg>
+                                        <span class="text-gray-500 -mt-1 ml-2"></span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="postReplies w-full mt-3 px-2 border-t py-2">
+                                <% if(post.comments.length == 0) { %>
+                                <center>
+                                    <span class="text-gray-500 text-lg">No Comments</span>
+                                </center>
+                                <% } else { post.comments.forEach(comment => { %>
+                                <div class="reply w-full">
+                                    <div class="replyHeader flex w-full pb-2 pt-2 border-t my-2">
+                                        <img src="/s/profile_pictures/<%= comment.usrId %>.png" alt=""
+                                            class="h-12 w-12 rounded-full">
+                                        <a href="/u/<%= comment.username %>" class="block py-2 ml-2 text-center theme-text rounded-lg hover:border-purple-light hover:bg-grey-lighter text-base
+                                font-semibold"><%= comment.by %></a>
+                                        <span class="text-md text-gray-500 mt-2">&nbsp; @<%= comment.username %></span>
+                                    </div>
+                                    <div class="replyBody w-full ml-12 px-2 -mt-4">
+                                        <p class="w-11/12 text-left"><%- comment.text %></p>
+                                    </div>
+                                </div>
+                                <% })} %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col w-1/4 -ml-5 mb-12">
+                <%- include('./right.ejs') %>
+            </div>
+        </div>
+    </section>
+
+    <%- include('./postComment.ejs') %>
+    <script src="/s/javascript/comment.js"></script>
+</body>
+
+</html>

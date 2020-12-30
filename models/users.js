@@ -1,3 +1,6 @@
+const {
+    v4: uuidv4
+} = require('uuid');
 module.exports = () => {
 
     var dataCamp = require('./database')
@@ -9,7 +12,11 @@ module.exports = () => {
         find: async (email) => {
             return new Promise(async (resolve, reject) => {
                 await dataCamp.findOne({
-                    email
+                    $or: [{
+                        "email": email
+                    }, {
+                        "username": email
+                    }]
                 }, (err, user) => {
                     if (err) return reject(err)
                     return resolve(user)
@@ -37,10 +44,50 @@ module.exports = () => {
         },
         getAll: () => {
             return new Promise(async (resolve, reject) => {
-                await dataCamp.find({}, { projection:{ _id:0, password: 0 } }).toArray((err, users) => {
-                    if(err) return reject(err)
+                await dataCamp.find({}, {
+                    projection: {
+                        _id: 0,
+                        password: 0
+                    }
+                }).toArray((err, users) => {
+                    if (err) return reject(err)
                     return resolve(users)
                 })
+            })
+        },
+        findByQuery: (query) => {
+            return new Promise(async (resolve, reject) => {
+                await dataCamp.find(query, { projection: { _id:0, firstname: 1, lastname: 1, username: 1, profile_pic: 1, } }).toArray((err, users) => {
+                    if (err) return reject(err)
+                    return resolve(users)
+                })
+
+            })
+        },
+        savePost: async (req, isImage) => {
+            var static_url;
+            if (isImage) {
+                static_url = `/s/feeds/${req.user.id}_${req.files.photo.name}`
+            } else {
+                static_url = ''
+            }
+            const post = {
+                _id: uuidv4(),
+                author: req.user.username,
+                static_url,
+                caption: req.body.caption,
+                comments: [],
+                likes: [],
+                createdAt: Date.now(),
+                lastEdited: Date.now(),
+                upp: req.user.profile_pic
+            }
+            await dataCamp.updateOne({
+                id: req.user.id
+            }, {
+                $addToSet: {
+                    posts: post
+                }
             })
         }
     }

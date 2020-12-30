@@ -4,7 +4,7 @@
             src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="Workflow">
         <ul class="list-reset text-xl px-5">
             <li>
-                <a href="#" class="block px-3 py-4 text-indigo-500 font-semibold hover:border-purple-light
+                <a href="/" class="block px-3 py-4 font-semibold hover:border-purple-light
                                purple-hover hover:text-indigo-500 rounded-full flex align-middle">
                     <svg class="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -16,7 +16,7 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="block px-3 py-4 theme-text font-semibold hover:border-purple-light
+                <a href="/api/v1/notifications" class="block px-3 py-4 theme-text font-semibold hover:border-purple-light
                                purple-hover hover:text-indigo-500 rounded-full flex">
                     <svg class="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -28,7 +28,7 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="block px-3 py-4 theme-text font-semibold hover:border-purple-light
+                <a href="/messages" class="block px-3 py-4 theme-text font-semibold hover:border-purple-light
                                purple-hover hover:text-indigo-500 rounded-full flex">
                     <svg class="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -40,7 +40,7 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="block px-3 py-4 theme-text font-semibold hover:border-purple-light
+                <a href="/u/<%= user.username %>" class="block px-3 py-4 theme-text font-semibold hover:border-purple-light
                                purple-hover hover:text-indigo-500 rounded-full flex">
                     <svg class="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -64,15 +64,15 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="block px-3 py-4 mt-3 w-full text-center text-white rounded-full font-semibold
-                                bg-purple-600 hover:border-purple-light hover:bg-grey-lighter">Tweet</a>
+                <a href="/#postCont" class="block px-3 py-4 mt-3 w-full text-center text-white rounded-full font-semibold
+                                bg-indigo-500 hover:border-indigo-light hover:bg-grey-lighter">Post</a>
             </li>
             <li class="absolute bottom-0 mb-24 w-1/6 flex">
                 <ul
                     class="border theme-border-gray-300 w-4/5 h-auto theme-bg shadow-lg rounded-lg p-2 hidden
                     account_dropDown animate__animated animate__fadeIn animate__faster">
                     <li class="flex mt-2 border-b theme-border-gray-300 mb-2 pb-2">
-                        <img src="https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png" alt=""
+                        <img src="<%= user.profile_pic %>" alt=""
                             class="h-10 w-10 rounded-full">
                         <a href="#" class="block py-2 ml-4 -mt-3 text-center theme-text rounded-lg
                                 theme-bg hover:border-purple-light hover:bg-grey-lighter text-lg
@@ -95,7 +95,7 @@
                 </ul>
             </li>
             <li class="absolute bottom-0 mb-6 w-1/6 flex" onclick="$('.account_dropDown').toggle()">
-                <img src="https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png" alt=""
+                <img src="<%= user.profile_pic %>" alt=""
                     class="h-10 w-10 rounded-full">
                 <a class="block py-2 ml-4 -mt-3 text-center theme-text rounded-lg
                                 theme-bg hover:border-purple-light hover:bg-grey-lighter text-lg

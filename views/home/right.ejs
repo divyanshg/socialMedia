@@ -1,10 +1,17 @@
 <div class="rightSideNav flex flex-wrap -m-2 pt-2">
-    <div class="p-2 w-full">
-        <input type="text" class="theme-gray-200 rounded-full py-2 px-3 w-full" placeholder="Search Babble">
+    <div class="p-2 w-full searchContainer">
+        <input type="text" class="search theme-gray-200 rounded-full py-2 px-3 w-full focus:outline-none"
+            placeholder="Search Babble">
+        <div class="searchCont hidden py-2 w-full pb-0 theme-gray-200 rounded-b-lg h-auto text-left mb-1">
+            <div class="flex flex-wrap">
+                <ul class="searchresults"></ul>
+            </div>
+        </div>
     </div>
+    <% if(typeof people == 'undefined') return %>
     <% if(people.length != 0){ %>
-    <div class="py-2 w-full pb-0 theme-gray-200 rounded-lg h-auto text-left">
-        <div class="flex flex-wrap">
+    <div class="py-2 px-2 w-full pb-0 text-left">
+        <div class="flex flex-wrap theme-gray-200 rounded-lg h-auto">
             <div class="w-full border-b theme-border-gray-300 pb-1">
                 <div class="inner py-2">
                     <h1 class="text-lg theme-text font-bold">&nbsp;&nbsp;Who to follow</h1>
@@ -12,14 +19,22 @@
             </div>
             <% people.forEach(person => { %>
             <% if(person.username == user.username) return %>
-            <div class="w-full border-b theme-border-gray-300 pb-1 h-20 hover-theme cursor-pointer flex py-4 px-2">
-                <img src="<%= person.profile_pic %>" alt="" class="w-10 h-10 rounded-ful">
-                <div class="inner p-2 -mt-3 ml-3 w-full">
+            <% if(user.following.find(p => p.id == person.id)) return %>
+            <div
+                class="follow_<%= person.id %> w-full border-b theme-border-gray-300 pb-1 h-20 hover-theme cursor-pointer flex py-4 px-2">
+                <img src="<%= person.profile_pic %>" alt="" class="w-10 h-10 rounded-full">
+                <a href="/u/<%= person.username %>" class="inner p-2 -mt-3 ml-1 w-full">
                     <h1 class="theme-text font-semibold"><%= person.firstname + " " + person.lastname %></h1>
                     <h1 class="text-sm text-gray-500">@<%= person.username %></h1>
-                </div>
-                <button onclick="follow('<%= person.id %>', '<%= person.username %>')"
-                    class="bg-transparent text-indigo-500 rounded-lg h-8 px-3 py-1 mt-1 font-semibold border border-indigo-500 hover:bg-indigo-500 hover:text-white">Follow</button>
+                </a>
+                <button onclick="follow('<%= person.id %>', '<%= person.username %>', this)"
+                    class="bg-transparent text-indigo-500 rounded-lg h-8 px-3 py-1 mt-1 font-semibold border border-indigo-500 hover:bg-indigo-500 hover:text-white w-11/12">
+                    <% if(person.following.find(u => u.id == user.id)) { %>
+                    Follow Back
+                    <% }else{ %>
+                    Follow
+                    <% } %>
+                </button>
             </div>
             <% }) %>
             <div class="w-full p-2 cursor-pointer">
@@ -46,14 +61,26 @@
     &nbsp;
     <a class="text-gray-500 text-sm px-1"> © 2020 Babble Inc.</a>
 </div>
+<script src="/s/javascript/search.js"></script>
 <script>
-    function follow(id, username) {
+    document.querySelector('.search').onkeyup = () => {
+        if ($(".search").val().length != 0) {
+            $(".search").removeClass("rounded-full").addClass("rounded-t-lg border-b border-gray-300")
+            $(".searchCont").show()
+        }else{
+            $(".search").removeClass("rounded-t-lg border-b border-gray-300").addClass("rounded-full")
+            $(".searchCont").hide()
+        }
+        updateList($(".search").val())
+    }
+
+    function follow(id, username, btn) {
         fetch(`/api/v1/follow/${id}/${username}`, {
                 method: 'POST'
             })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
+            .then(response => {
+                btn.innerHTML = "Following"
+                $(".follow_" + id).hide()
             })
             .catch((error) => {
                 console.error('Error:', error);

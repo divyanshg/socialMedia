@@ -1,0 +1,104 @@
+<title><%= profileuser.firstname +" "+ profileuser.lastname %> ( @<%= profileuser.username %> )</title>
+<%- include('../headers') %>
+<style>
+    .profile {
+        height: 100%;
+    }
+
+    .profileInfo {
+        height: 200px;
+    }
+
+    .coverImage {
+        height: 200px;
+        padding-top: 125px;
+    }
+
+    .profileImage {
+        width: 150px;
+        height: 150px;
+    }
+</style>
+
+<body class="bg-white w-full">
+    <section class="theme-text body-font relative">
+        <div class="container flex px-5 py-1 mx-auto h-full">
+            <%- include('./left.ejs') %>
+            <div class="profileContainer lg:w-1/2 md:w-2/3 mx-auto border-r border-l theme-border-gray-300 py-2 h-full
+                overflow-y-auto overflow-x-hidden">
+                <div class="flex flex-wrap -m-2 w-full">
+                    <div class="w-full flex px-2">
+                        <button class="h-6 w-6 mx-2 text-indigo-500 mt-4" id="goBack">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                            </svg>
+                        </button>
+                        <div class=" mx-2 p-2 w-full border-b theme-border-gray-300 -mt-2 w-full">
+                            <h1 class="text-xl theme-text font-bold">
+                                <%= profileuser.firstname +" "+ profileuser.lastname %>
+                            </h1>
+                            <h1 class="text-sm text-gray-500"><%= profileuser.posts.length %> Posts</h1>
+                            <% if(profileuser.id == user.id) { %>
+                            <div class="float-right -mt-8 pb-2 h-5 w-5 cursor-pointer hover:text-indigo-500"
+                                title="Edit Profile">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                </svg>
+
+                            </div>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile mt-2 bg-white">
+                    <div class="w-full coverImage bg-gray-700">
+                        <div class="rounded-full profileImage bg-white mx-4 border-4 border-gray-900"
+                            <% if(profileuser.id == user.id) { %> onclick='$("#upImageModal").show()' <% } %>>
+                            <img src="<%= profileuser.profile_pic %>" alt="" class="h-full w-full rounded-full">
+                        </div>
+                    </div>
+                    <div class="profileInfo w-full bg-white mt-20 px-4">
+                        <span class="text-2xl font-bold"><%= profileuser.firstname +" "+ profileuser.lastname %></span>
+                        <br>
+                        <span class="text-md text-gray-600">@<%= profileuser.username %></span>
+                        <br>
+                        <span class="text-md text-gray-600 font-semibold"><%= profileuser.bio %></span>
+                        <br>
+                        <span class="text-md text-gray-600"> <b class="text-black cursor-pointer" id="followingNum"> <%= profileuser.following.length %>
+                            </b>Following &nbsp; <b class="text-black cursor-pointer" id="followerNum"> <%= profileuser.followers.length %> </b>
+                            Followers </span>
+                    </div>
+                    <div class="postsContainer">
+                        <%- include('./posts.ejs') %>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col w-1/4 -ml-5 mb-12">
+                <%- include('./right.ejs') %>
+            </div>
+        </div>
+    </section>
+    <% if(profileuser.id == user.id) { %>
+    <%- include('./newpp.ejs') %>
+    <% } %>
+    <%- include('../modals/followers.ejs') %>
+    <%- include('../modals/followings.ejs') %>
+</body>
+<script>
+    document.querySelector('#goBack').onclick = () => {
+        window.history.back();
+    }
+    document.querySelector("#followerNum").onclick = () => {
+        $("#followerModal").show()
+    }
+    document.querySelector("#followingNum").onclick = () => {
+        $("#followingModal").show()
+    }
+</script>
+
+</html>

@@ -1,0 +1,30 @@
+
+<%- include('../headers') %>
+
+<body class="bg-white w-full">
+    <section class="theme-text body-font relative">
+        <div class="container flex px-5 py-1 mx-auto h-full">
+            <%- include('../home/left.ejs') %>
+            <div class="tweetContainer lg:w-1/2 md:w-2/3 mx-auto border-r border-l theme-border-gray-300 px-2 py-2 h-full
+                overflow-y-auto overflow-x-hidden">
+                <div class="flex flex-wrap -m-2">
+                    <div class="p-2 w-full border-b theme-border-gray-300">
+                        <h1 class="text-xl theme-text font-bold">Notifications</h1>
+                    </div>
+                    <div class="notifContainer w-full h-auto">
+                        <% notifications.forEach(notification => { %>
+                            <div class="w-full p-4 border-b border-gray-300">
+                                <span class="text-lg"><%= notification.msg %></span>
+                            </div>
+                        <% }) %>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col w-1/4 -ml-5 mb-12">
+                <%- include('../home/right.ejs') %>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

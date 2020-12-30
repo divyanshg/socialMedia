@@ -5,6 +5,7 @@ const {
 } = require("../../../authorizers/userAuth");
 
 const notifications = require('../../../utils/notification')
+const users = require('../../../models/users')()
 
 var dataCamp = require('../../../models/database')
 dataCamp.connect()
@@ -24,18 +25,175 @@ router.post('/follow/:userid/:username', checkAuthenticated, async (req, res) =>
 
     const addFollower = await dataCamp.updateOne({
         id: req.params.userid
-    }, { $addToSet: { followers: follower } })
+    }, {
+        $addToSet: {
+            followers: follower
+        }
+    })
 
     const addFollowing = await dataCamp.updateOne({
         id: req.user.id
-    }, { $addToSet: { following: following } })
+    }, {
+        $addToSet: {
+            following: following
+        }
+    })
 
     const notify = notifications.createNew(req.params.userid, `${req.user.username} started following you.`, dataCamp)
 
     Promise.all([addFollower, addFollowing, notify])
         .then(results => {
-            //console.log(results)
+            res.sendStatus(200)
         });
+})
+
+router.post('/unfollow/:userid', checkAuthenticated, async (req, res) => {
+    const removeFollower = await dataCamp.updateOne({
+        id: req.params.userid
+    }, {
+        $pull: {
+            "followers": {id: req.user.id}
+        }
+    })
+
+    const removeFollowing = await dataCamp.updateOne({
+        id: req.user.id
+    }, {
+        $pull: {
+            "following": {id: req.params.userid}
+        }
+    })
+
+    Promise.all([removeFollower, removeFollowing])
+        .then(results => {
+            res.sendStatus(200)
+        });
+})
+
+router.post('/like/:postId/:uid', checkAuthenticated, async (req, res) => {
+    const like = {
+        id: req.user.id,
+        username: req.user.username
+    }
+
+    const addLike = await dataCamp.updateOne({
+        username: req.params.uid,
+        posts: {
+            $elemMatch: {
+                _id: req.params.postId
+            }
+        }
+    }, {
+        $addToSet: {
+            "posts.$.likes": like
+        }
+    })
+
+    const notify = notifications.createNew(req.params.userid, {
+        msg: `${req.user.username} liked your post.`
+    }, dataCamp)
+
+    Promise.all([addLike, notify])
+        .then(results => {
+            res.sendStatus(200)
+        });
+})
+
+router.post('/removelike/:postId/:uid', checkAuthenticated, async (req, res) => {
+    const removeLike = await dataCamp.updateOne({
+        username: req.params.uid,
+        posts: {
+            $elemMatch: {
+                _id: req.params.postId
+            }
+        }
+    }, {
+        $pull: {
+            "posts.$.likes": {
+                id: req.user.id
+            }
+        }
+    })
+
+    Promise.all([removeLike])
+        .then(results => {
+            res.sendStatus(200)
+        });
+})
+
+router.post('/new_profile_picture', checkAuthenticated, async (req, res) => {
+    var pp = req.files.pp
+    await pp.mv(`./public/profile_pictures/${req.user.id}.png`, (err, result) => {
+        if (err) throw err
+        return res.redirect('/u/' + req.user.username)
+    })
+})
+
+router.get("/search", function (req, res, next) {
+    var regx = "^" + req.query.q + ".*";
+    if (req.query.q == '') return res.send();
+    users.findByQuery({
+        $or: [{
+                username: {
+                    $regex: regx,
+                    $options: 'i'
+                }
+            },
+            {
+                firstname: {
+                    $regex: regx,
+                    $options: 'i'
+                }
+            },
+            {
+                lastname: {
+                    $regex: regx,
+                    $options: 'i'
+                }
+            }
+        ]
+    }).then(all => {
+        return res.send(all);
+    });
+});
+
+router.post('/comment/:postId/:author', checkAuthenticated, async (req, res) => {
+    const comment = {
+        text: req.query.txt,
+        by: `${req.user.firstname} ${req.user.lastname}`,
+        username: req.user.username,
+        usrId: req.user.id
+    }
+
+    const addComment = await dataCamp.updateOne({
+        username: req.params.author,
+        posts: {
+            $elemMatch: {
+                _id: req.params.postId
+            }
+        }
+    }, {
+        $addToSet: {
+            "posts.$.comments": comment
+        }
+    })
+
+    const notify = notifications.createNew(req.params.userid, {
+        msg: `${req.user.username} commented on your post.`
+    }, dataCamp)
+
+    Promise.all([addComment, notify])
+        .then(results => {
+            res.sendStatus(200)
+        });
+
+})
+
+router.get('/notifications', checkAuthenticated, async (req, res) => {
+    res.render('notifications/index.ejs', {
+        notifications: req.user.notifications,
+        user: req.user
+    })
 })
 
 module.exports = router

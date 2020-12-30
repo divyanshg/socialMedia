@@ -5,7 +5,6 @@
         width: 50px;
         margin-top: -10px;
         background-image: url('https://abs.twimg.com/a/1446542199/img/t1/web_heart_animation.png');
-        background-position: left;
         background-repeat: no-repeat;
         background-size: 2900%;
     }
@@ -32,29 +31,28 @@
 <% posts.forEach(post => { %>
 <div class="post px-2 w-full h-auto border-b theme-border-gray-300 cursor-pointer">
     <div class="postHeader flex w-full pb-2 pt-2 ">
-        <img src="https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png" alt=""
-            class="h-12 w-12 rounded-full">
-        <a href="#" class="block py-2 ml-2 -mt-2 text-center theme-text rounded-lg hover:border-purple-light hover:bg-grey-lighter text-base
-                                font-semibold"><%= post.author %>
-            <div
-                class="float-right font-bold cursor-pointer hover:text-blue-400 rounded-full mt-1 ml-3 align-middle text-center">
-                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
-            </div>
+        <img src="<%= post.upp %>" alt="" class="h-12 w-12 rounded-full">
+        <a href="/u/<%= post.author %>" class="block py-2 ml-2 -mt-2 text-center theme-text rounded-lg hover:border-purple-light hover:bg-grey-lighter text-base
+                                font-semibold"><%= post.author %></a>
+        <div
+            class="float-right font-bold cursor-pointer hover:text-blue-400 rounded-full mt-1 ml-3 align-middle text-center">
+            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+        </div>
     </div>
-    <div class="postBody w-full ml-12 px-2 -mt-6">
-        <p class="w-11/12 text-left"><%- post.caption %></p>
-        <% if(post.static_url != null){ %>
-        <img src="<%= post.static_url %>" alt="" class="w-11/12 h-auto rounded-lg mt-2">
+    <a href="/post/<%= post._id %>" class="postBody w-full ml-12 px-2 -mt-6">
+        <p class="w-11/12 text-left"><%= post.caption %></p>
+        <% if(post.static_url != ''){ %>
+        <img src="<%= post.static_url %>" alt="" class="w-11/12 h-auto rounded-lg mt-2" loading="lazy">
         <% } %>
-    </div>
+    </a>
     <div class="postActions w-full mt-3 px-2">
         <ul class="w-full flex">
-            <li class="mx-12 rounded-full text-center cursor-pointer hover:text-blue-200 flex">
+            <li class="mx-12 rounded-full text-center cursor-pointer hover:text-blue-200 flex" onclick="openCommentModal('<%= post._id %>', '<%= post.upp %>', '<%= post.author %>', '<%= post.caption %>')">
                 C
-                <span class="text-gray-500  ml-2" id="<%= post.tweetID %>_commentsCount"></span>
+                <span class="text-gray-500  ml-2" id="_commentsCount"></span>
             </li>
             <li class="mx-12 rounded-full p-1 text-center cursor-pointer hover:text-blue-400 flex">
                 <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -65,8 +63,12 @@
                 <span class="text-gray-500 -mt-1 ml-2"></span>
             </li>
             <li class="mx-12 rounded-full text-center cursor-pointer flex">
-                <div class="heart"></div>
-                <span class="text-gray-500 mt-1 -ml-2" id="<%= post.tweetID %>_likesCount"></span>
+                <div class="heart"
+                    style="background-position: <% if(post.likes.find(like => like.username == user.username)) { %> right <% }else{ %> left <% } %>;"
+                    id="post_<%= post._id %>_<%= post.author %>"
+                    data-liked="<% if(post.likes.find(like => like.username == user.username)) { %>true<% }else{ %>false<% } %>">
+                </div>
+                <span class="text-gray-500 mt-1 -ml-2" id="<%= post._id %>_likesCount"><%= post.likes.length %></span>
             </li>
             <li class="mx-12 rounded-full text-center cursor-pointer hover:text-orange-400 flex">
                 <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -82,5 +84,57 @@
 <% })} %>
 <div class="newPostBanner w-full pb-2 pt-2 border-b theme-border-gray-300 text-center align-middle">
     <h1 class="text-xl text-blue-400 font-bold">All caught up</h1>
-    <span class="text-gray-500 text-sm">Follow some more people to show their posts here.</span>
 </div>
+<script>
+    $(".heart").on('click touchstart', function () {
+        $(this).toggleClass('is_animating');
+        /*
+        console.log($(this).css("background-position"))
+        if ($(this).css("background-position") == "0% 50%") {
+            $(this).css("background-position", "left")
+            //removeLike($(this).attr('id').split('_')[1], $(this).attr('id').split('_')[2])
+        } else {
+            $(this).css("background-position", "right")
+            addLike($(this).attr('id').split('_')[1], $(this).attr('id').split('_')[2])
+        }*/
+        addLike($(this).attr('id').split('_')[1], $(this).attr('id').split('_')[2])
+    });
+
+    /*when the animation is over, remove the class*/
+    $(".heart").on('animationend', function () {
+        $(this).toggleClass('is_animating');
+        $(this).css("background-position", "right")
+        $(this).data("liked", "true")
+    });
+
+
+    function removeLike(postId, uname) {
+        fetch(`/api/v1/removelike/${postId}/${uname}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => {
+                $(`#${postId}_likesCount`).html(parseInt($(`#${postId}_likesCount`).html()) - 1)
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+
+    function addLike(postId, uname) {
+        fetch(`/api/v1/like/${postId}/${uname}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => {
+                $(`#${postId}_likesCount`).html(parseInt($(`#${postId}_likesCount`).html()) + 1)
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+</script>

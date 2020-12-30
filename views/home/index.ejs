@@ -19,17 +19,35 @@
 
                         </div>
                     </div>
-                    <div class="p-3 w-full flex">
-                        <img src="https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png" alt=""
-                            class="h-10 w-10 rounded-full">
-                        <textarea
-                            class="tweetMsg w-full rounded focus:outline-none foucs:border-b border-gray-200 h-10 text-base px-4 py-2 resize-none block theme-bg"
-                            placeholder="Whats Happening?"></textarea>
-                    </div>
-                    <div class="p-2 w-full border-b-8 pb-3 theme-border-gray-300">
-                        <button onclick="createPost($('.tweetMSg').val())"
-                            class="flex mx-auto text-white bg-purple-300 border-0 py-1 px-8 focus:outline-none rounded-full text-lg float-right">Tweet</button>
-                    </div>
+
+                    <form method="POST" enctype="multipart/form-data" action="/post" class="w-full">
+                        <div class="p-3 w-full flex">
+                            <img src="<%= user.profile_pic %>"
+                                alt="" class="h-10 w-10 rounded-full">
+                            <input type="text" name="caption" id="postCont"
+                                class="caption w-full rounded focus:outline-none foucs:border-b border-gray-200 h-10 text-base px-4 py-2 resize-none block theme-bg"
+                                placeholder="Whats Happening?" />
+                        </div>
+                        <div class="p-2 w-full border-b-8 pb-3 theme-border-gray-300 flex">
+                            <div class="w-full flex space-x-2 -mt-2">
+                                <button type="button" id="upImage"
+                                    class="h-8 w-8 mt-4 mx-4 rounded-full bg-gray-300 p-2 hover:bg-gray-400 focus:outline-none"
+                                    title="Upload Image">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                    </svg>
+                                </button>
+                                <%- include('./uploadImage.ejs') %>
+                            </div>
+                            <button type="submit" onclick="createPost($('.tweetMSg').val())"
+                                class="flex mx-auto text-white bg-indigo-500 border-0 py-1 px-8 focus:outline-none rounded-full text-lg float-right h-10 py-1"
+                                style="height: 40px;padding-top: 6px;">Post</button>
+
+                        </div>
+
+                    </form>
                     <div class="postsContainer w-full h-auto">
                         <%- include('./posts.ejs') %>
                     </div>
@@ -40,6 +58,14 @@
             </div>
         </div>
     </section>
+
+    <%- include('./postComment.ejs') %>
+    <script src="/s/javascript/comment.js"></script>
+    <script>
+        document.querySelector("#upImage").onclick = () => {
+            $("#upImageModal").show()
+        }
+    </script>
 </body>
 
 </html>

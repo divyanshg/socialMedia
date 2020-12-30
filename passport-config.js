@@ -15,6 +15,7 @@ module.exports = (passport) => {
         try {
 
             if (await bcrypt.compare(password, user.password)) {
+                delete user.password;
                 return done(null, user)
             } else {
 

@@ -9,6 +9,7 @@ const mainRouter = require('../routes/main/index')
 const v1_apiRouter = require('../routes/api/v1')
 
 const methodOverride = require('method-override')
+var fileupload = require("express-fileupload");
 
 //Setting up the template engine
 
@@ -24,6 +25,7 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(methodOverride('_method'))
+app.use(fileupload());
 //Importing the routes
 
 app.use('/accounts', require('../routes/root'))

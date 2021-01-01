@@ -39,7 +39,9 @@ router.post('/follow/:userid/:username', checkAuthenticated, async (req, res) =>
         }
     })
 
-    const notify = notifications.createNew(req.params.userid, `${req.user.username} started following you.`, dataCamp)
+    const notify = notifications.createNew(req.params.userid, {
+        msg: `${req.user.username} started following you.`
+    }, dataCamp)
 
     Promise.all([addFollower, addFollowing, notify])
         .then(results => {
@@ -52,7 +54,9 @@ router.post('/unfollow/:userid', checkAuthenticated, async (req, res) => {
         id: req.params.userid
     }, {
         $pull: {
-            "followers": {id: req.user.id}
+            "followers": {
+                id: req.user.id
+            }
         }
     })
 
@@ -60,7 +64,9 @@ router.post('/unfollow/:userid', checkAuthenticated, async (req, res) => {
         id: req.user.id
     }, {
         $pull: {
-            "following": {id: req.params.userid}
+            "following": {
+                id: req.params.userid
+            }
         }
     })
 
@@ -89,7 +95,7 @@ router.post('/like/:postId/:uid', checkAuthenticated, async (req, res) => {
         }
     })
 
-    const notify = notifications.createNew(req.params.userid, {
+    const notify = notifications.createNew(req.params.uid, {
         msg: `${req.user.username} liked your post.`
     }, dataCamp)
 
@@ -153,7 +159,13 @@ router.get("/search", function (req, res, next) {
             }
         ]
     }).then(all => {
-        return res.send(all);
+        var users = []
+        all.forEach(user => {
+            if (user.accStatus != "DEACTIVATED") {
+                users.push(user)
+            }
+        })
+        return res.send(users);
     });
 });
 
@@ -193,6 +205,31 @@ router.get('/notifications', checkAuthenticated, async (req, res) => {
     res.render('notifications/index.ejs', {
         notifications: req.user.notifications,
         user: req.user
+    })
+    await dataCamp.updateOne({
+        id: req.user.id
+    }, {
+        $set: {
+            notifications: []
+        }
+    })
+})
+
+router.post('/updateProfile', checkAuthenticated, async (req, res) => {
+    var bdy = req.body
+    var key = Object.keys(bdy)[0]
+
+    var query = {}
+
+    query[key] = bdy[key]
+
+    await dataCamp.updateOne({
+        id: req.user.id
+    }, {
+        $set: query
+    }, (err, result) => {
+        if (err) res.sendStatus(500)
+        res.redirect('/settings/account')
     })
 })
 

@@ -16,7 +16,7 @@
                 </a>
             </li>
             <li>
-                <a href="/api/v1/notifications" class="block px-3 py-4 theme-text font-semibold hover:border-purple-light
+                <a href="/api/v1/notifications" title="<%= user.notifications.length %> new notifications" class="block px-3 py-4 theme-text font-semibold hover:border-purple-light
                                purple-hover hover:text-indigo-500 rounded-full flex">
                     <svg class="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -25,6 +25,10 @@
                     </svg>
                     &nbsp;
                     Notifications
+                    <% if(user.notifications.length != 0){ %>
+                    <span
+                        class="rounded-full p-1 w-2 h-2 bg-indigo-500 etxt-white text-sm mx-2 mt-3 float-right"></span>
+                    <% } %>
                 </a>
             </li>
             <li>
@@ -52,15 +56,15 @@
                 </a>
             </li>
             <li onclick="toggleTheme()">
-                <a href="#" class="block px-3 py-4 theme-text font-semibold hover:border-purple-light
+                <a href="/settings" class="block px-3 py-4 theme-text font-semibold hover:border-purple-light
                                purple-hover hover:text-indigo-500 rounded-full flex">
-                    <svg class="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M8 12h.01M12 12h.01M16 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M5 4a1 1 0 00-2 0v7.268a2 2 0 000 3.464V16a1 1 0 102 0v-1.268a2 2 0 000-3.464V4zM11 4a1 1 0 10-2 0v1.268a2 2 0 000 3.464V16a1 1 0 102 0V8.732a2 2 0 000-3.464V4zM16 3a1 1 0 011 1v7.268a2 2 0 010 3.464V16a1 1 0 11-2 0v-1.268a2 2 0 010-3.464V4a1 1 0 011-1z">
+                        </path>
                     </svg>
                     &nbsp;
-                    More
+                    Settings
                 </a>
             </li>
             <li>
@@ -68,12 +72,10 @@
                                 bg-indigo-500 hover:border-indigo-light hover:bg-grey-lighter">Post</a>
             </li>
             <li class="absolute bottom-0 mb-24 w-1/6 flex">
-                <ul
-                    class="border theme-border-gray-300 w-4/5 h-auto theme-bg shadow-lg rounded-lg p-2 hidden
+                <ul class="border theme-border-gray-300 w-4/5 h-auto theme-bg shadow-lg rounded-lg p-2 hidden
                     account_dropDown animate__animated animate__fadeIn animate__faster">
                     <li class="flex mt-2 border-b theme-border-gray-300 mb-2 pb-2">
-                        <img src="<%= user.profile_pic %>" alt=""
-                            class="h-10 w-10 rounded-full">
+                        <img src="<%= user.profile_pic %>" alt="" class="h-10 w-10 rounded-full">
                         <a href="#" class="block py-2 ml-4 -mt-3 text-center theme-text rounded-lg
                                 theme-bg hover:border-purple-light hover:bg-grey-lighter text-lg
                                 hover:font-bold"><%= user.firstname +" "+ user.lastname %><br> <span
@@ -95,8 +97,7 @@
                 </ul>
             </li>
             <li class="absolute bottom-0 mb-6 w-1/6 flex" onclick="$('.account_dropDown').toggle()">
-                <img src="<%= user.profile_pic %>" alt=""
-                    class="h-10 w-10 rounded-full">
+                <img src="<%= user.profile_pic %>" alt="" class="h-10 w-10 rounded-full">
                 <a class="block py-2 ml-4 -mt-3 text-center theme-text rounded-lg
                                 theme-bg hover:border-purple-light hover:bg-grey-lighter text-lg
                                 hover:font-bold"><%= user.firstname +" "+ user.lastname %> <br> <span

@@ -1,0 +1,57 @@
+<title>Deactivate account / Babble</title>
+<%- include('../headers') %>
+
+<body class="bg-white w-full">
+    <section class="theme-text body-font relative">
+        <div class="container flex px-5 py-1 mx-auto h-full">
+            <%- include('../home/left.ejs') %>
+            <div class="tweetContainer lg:w-1/2 md:w-2/3 mx-auto border-r border-l theme-border-gray-300 px-2 py-2 h-full
+                overflow-y-auto overflow-x-hidden">
+                <div class="flex flex-wrap -m-2">
+                    <div class="p-2 w-full border-b theme-border-gray-300 flex">
+                        <button class="h-6 w-6 mx-2 text-indigo-500 mt-1 mr-4 focus:outline-none" id="goBack">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                            </svg>
+                        </button>
+                        <h1 class="text-xl theme-text font-bold">Deactivate account</h1>
+                    </div>
+                    <div class="settingsContainer w-full h-auto">
+                        <div class="account w-full flex p-2 py-4 border-b mb-2">
+                            <img src="<%= user.profile_pic %>" alt="" class="rounded-full h-12 w-12">
+                            <div class="info w-full mx-4 -mt-1">
+                                <span class="font-semibold text-lg"><%= user.firstname %> <%= user.lastname %></span>
+                                <br>
+                                <span class="text-gray-500 text-sm">@<%= user.username %></span>
+                            </div>
+                        </div>
+                        <span class="text-2xl font-semibold mx-4">This will deactivate your account</span>
+                        <hr class="mt-2">
+                        <div class="p-4 w-full border-b-4 border-gray-400">
+                            <span class="text-sm text-gray-500">
+                                You’re about to start the process of deactivating your Babble account. Your display
+                                name, @username, and public profile will no longer be viewable on Babble
+                            </span>
+                        </div>
+                        <form action="/settings/deactivate" method="POST">
+                            <button type="submit"
+                                class="w-full text-red-600 hover:bg-red-600 hover:text-white font-semibold text-center p-2">Deactivate</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col w-1/4 -ml-5 mb-12">
+                <%- include('./right.ejs') %>
+            </div>
+        </div>
+    </section>
+</body>
+<script>
+    document.querySelector('#goBack').onclick = () => {
+        window.history.back();
+    }
+</script>
+
+</html>

@@ -21,7 +21,7 @@
             <% if(person.username == user.username) return %>
             <% if(user.following.find(p => p.id == person.id)) return %>
             <div
-                class="follow_<%= person.id %> w-full border-b theme-border-gray-300 pb-1 h-20 hover-theme cursor-pointer flex py-4 px-2">
+                class="follow_<%= person.id %> w-full border-b theme-border-gray-300 pb-1 h-20 hover-theme cursor-pointer flex py-4 px-2 animate__animated animate__jackInTheBox animate__faster">
                 <img src="<%= person.profile_pic %>" alt="" class="w-10 h-10 rounded-full">
                 <a href="/u/<%= person.username %>" class="inner p-2 -mt-3 ml-1 w-full">
                     <h1 class="theme-text font-semibold"><%= person.firstname + " " + person.lastname %></h1>

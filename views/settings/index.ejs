@@ -1,0 +1,66 @@
+<title>Your Account / Babble</title>
+<%- include('../headers') %>
+
+<body class="bg-white w-full">
+    <section class="theme-text body-font relative">
+        <div class="container flex px-5 py-1 mx-auto h-full">
+            <%- include('../home/left.ejs') %>
+            <div class="tweetContainer lg:w-1/2 md:w-2/3 mx-auto border-r border-l theme-border-gray-300 px-2 py-2 h-full
+                overflow-y-auto overflow-x-hidden">
+                <div class="flex flex-wrap -m-2">
+                    <div class="p-2 w-full border-b theme-border-gray-300">
+                        <h1 class="text-xl theme-text font-bold">Settings</h1>
+                    </div>
+                    <div class="settingsContainer w-full h-auto">
+                        <div class="w-full h-12 p-2 border-b">
+                            <span class="text-sm">See information about your account, or learn about your account
+                                deactivation options</span>
+                        </div>
+                        <a href="/settings/account" class="setting w-full h-20 p-2 flex border-b hover:bg-gray-300 cursor-pointer">
+                            <div class="w-8 set-icon pt-4 h-full p-2">
+                                <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div class="w-full mx-8 mt-1 flex flex-wrap">
+                                <span class="font-semibold">Account information</span>
+                                <span class="text-sm -mt-1">See your account information like your phone number and
+                                    email address.</span>
+                            </div>
+                        </a>
+                        <a href="/settings/password" class="setting w-full h-20 p-2 flex border-b hover:bg-gray-300 cursor-pointer">
+                            <div class="w-8 set-icon pt-4 h-full p-2">
+                                <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M18 8a6 6 0 01-7.743 5.743L10 14l-1 1-1 1H6v2H2v-4l4.257-4.257A6 6 0 1118 8zm-6-4a1 1 0 100 2 2 2 0 012 2 1 1 0 102 0 4 4 0 00-4-4z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div class="w-full mx-8 mt-1 flex flex-wrap">
+                                <span class="font-semibold">Change your password</span>
+                                <span class="text-sm -mt-1">You can change your password at any time. Remember to use a strong password.</span>
+                            </div>
+                        </a>
+                        <a href="/settings/deactivate" class="setting w-full h-20 p-2 flex border-b hover:bg-gray-300 cursor-pointer">
+                            <div class="w-8 set-icon pt-4 h-full p-2">
+                                <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
+                            </div>
+                            <div class="w-full mx-8 mt-1 flex flex-wrap">
+                                <span class="font-semibold">Deactivate your account</span>
+                                <span class="text-sm -mt-1">Want to take a break? Disable your account for a while.</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col w-1/4 -ml-5 mb-12">
+                <%- include('./right.ejs') %>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

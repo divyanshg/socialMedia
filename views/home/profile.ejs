@@ -41,7 +41,7 @@
                             </h1>
                             <h1 class="text-sm text-gray-500"><%= profileuser.posts.length %> Posts</h1>
                             <% if(profileuser.id == user.id) { %>
-                            <div class="float-right -mt-8 pb-2 h-5 w-5 cursor-pointer hover:text-indigo-500"
+                            <a href="/settings/account" class="float-right -mt-8 pb-2 h-5 w-5 cursor-pointer hover:text-indigo-500"
                                 title="Edit Profile">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor">
@@ -49,7 +49,21 @@
                                         d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                 </svg>
 
-                            </div>
+                            </a>
+                            <% }else{ %>
+                            <% if(user.following.find(u => u.id == profileuser.id)){ %>
+                            <button id="unf_<%= profileuser.id %>"
+                                class="unf-btn-prof w-1/5 -mt-10 rounded-full border-2 border-indigo-500 text-indigo-500 hover:bg-indigo-500 hover:text-white float-right">Unfollow</button>
+                            <% } else { %>
+                            <button onclick="follow('<%= profileuser.id %>', '<%= profileuser.username %>', this)"
+                                class="bg-transparent text-indigo-500 rounded-lg h-8 px-3 py-1 float-right font-semibold border border-indigo-500 hover:bg-indigo-500 hover:text-white w-auto -mt-10">
+                                <% if(profileuser.following.find(u => u.id == user.id)) { %>
+                                Follow Back
+                                <% }else{ %>
+                                Follow
+                                <% } %>
+                            </button>
+                            <% } %>
                             <% } %>
                         </div>
                     </div>
@@ -69,8 +83,10 @@
                         <br>
                         <span class="text-md text-gray-600 font-semibold"><%= profileuser.bio %></span>
                         <br>
-                        <span class="text-md text-gray-600"> <b class="text-black cursor-pointer" id="followingNum"> <%= profileuser.following.length %>
-                            </b>Following &nbsp; <b class="text-black cursor-pointer" id="followerNum"> <%= profileuser.followers.length %> </b>
+                        <span class="text-md text-gray-600"> <b class="text-black cursor-pointer" id="followingNum">
+                                <%= profileuser.following.length %>
+                            </b>Following &nbsp; <b class="text-black cursor-pointer" id="followerNum">
+                                <%= profileuser.followers.length %> </b>
                             Followers </span>
                     </div>
                     <div class="postsContainer">
@@ -98,6 +114,19 @@
     }
     document.querySelector("#followingNum").onclick = () => {
         $("#followingModal").show()
+    }
+
+    function follow(id, username, btn) {
+        fetch(`/api/v1/follow/${id}/${username}`, {
+                method: 'POST'
+            })
+            .then(response => {
+                btn.innerHTML = "Following"
+                window.location.reload()
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
     }
 </script>
 

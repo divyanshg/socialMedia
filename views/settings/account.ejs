@@ -1,0 +1,88 @@
+<title>Your Account / Babble</title>
+<%- include('../headers') %>
+
+<body class="bg-white w-full">
+    <section class="theme-text body-font relative">
+        <div class="container flex px-5 py-1 mx-auto h-full">
+            <%- include('../home/left.ejs') %>
+            <div class="tweetContainer lg:w-1/2 md:w-2/3 mx-auto border-r border-l theme-border-gray-300 px-2 py-2 h-full
+                overflow-y-auto overflow-x-hidden">
+                <div class="flex flex-wrap -m-2">
+                    <div class="p-2 w-full border-b theme-border-gray-300 flex">
+                        <button class="h-6 w-6 mx-2 text-indigo-500 mt-1 mr-4 focus:outline-none" id="goBack">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                            </svg>
+                        </button>
+                        <h1 class="text-xl theme-text font-bold">Your Account</h1>
+                    </div>
+                    <div class="settingsContainer w-full h-auto">
+                        <div id="firstname" class="setting w-full h-16 p-2 px-4 flex border-b hover:bg-gray-300 cursor-pointer">
+                            <div class="w-full">
+                                <span class="font-semibold">First Name</span>
+                                <br>
+                                <span class="text-sm -mt-1 firstname-val"><%= user.firstname %></span>
+                            </div>
+                        </div>
+                        <div id="lastname" class="setting w-full h-16 p-2 px-4 flex border-b hover:bg-gray-300 cursor-pointer">
+                            <div class="w-full">
+                                <span class="font-semibold">Last Name</span>
+                                <br>
+                                <span class="text-sm -mt-1 lastname-val"><%= user.lastname %></span>
+                            </div>
+                        </div>
+                        <div class="w-full h-16 p-2 px-4 flex border-b hover:bg-gray-300 cursor-pointer">
+                            <div class="w-full">
+                                <span class="font-semibold">Username</span>
+                                <br>
+                                <span class="text-sm -mt-1">@</span><span class="text-sm -mt-1"><%= user.username %></span>
+                            </div>
+                        </div>
+                        <div class="w-full h-16 p-2 px-4 flex border-b hover:bg-gray-300 cursor-pointer">
+                            <div class="w-full">
+                                <span class="font-semibold">Email</span>
+                                <br>
+                                <span class="text-sm -mt-1"><%= user.email %></span>
+                            </div>
+                        </div>
+                        <div id="bio" class="setting w-full h-16 p-2 px-4 flex border-b hover:bg-gray-300 cursor-pointer">
+                            <div class="w-full">
+                                <span class="font-semibold">Bio</span>
+                                <br>
+                                <span class="text-sm -mt-1 bio-val"><%= user.bio %></span>
+                            </div>
+                        </div>
+                        <div id="dob" class="setting w-full h-16 p-2 px-4 flex border-b hover:bg-gray-300 cursor-pointer">
+                            <div class="w-full">
+                                <span class="font-semibold">Birth Date</span>
+                                <br>
+                                <span class="text-sm -mt-1 dob-val"><%= user.dob %></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col w-1/4 -ml-5 mb-12">
+                <%- include('./right.ejs') %>
+            </div>
+        </div>
+    </section>
+    <%- include('./editModal.ejs') %>
+</body>
+<script>
+    document.querySelector('#goBack').onclick = () => {
+        window.history.back();
+    }
+
+    document.querySelectorAll(".setting").forEach(btn => {
+        btn.onclick = () => {
+            $("#dynamic_label").html(btn.id)
+            $("#dynamic_input").attr("name", btn.id).val(`${$("."+btn.id+"-val").html()}`)
+            $('#editModal').show()
+        }
+    })
+</script>
+
+</html>

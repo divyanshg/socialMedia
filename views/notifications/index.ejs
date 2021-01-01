@@ -12,6 +12,9 @@
                         <h1 class="text-xl theme-text font-bold">Notifications</h1>
                     </div>
                     <div class="notifContainer w-full h-auto">
+                        <% if(notifications.length == 0) { %>
+                            <span class="text-center w-full m-2 my-4">No new notifications</span>
+                        <% } %>
                         <% notifications.forEach(notification => { %>
                             <div class="w-full p-4 border-b border-gray-300">
                                 <span class="text-lg"><%= notification.msg %></span>

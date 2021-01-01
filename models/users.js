@@ -57,7 +57,7 @@ module.exports = () => {
         },
         findByQuery: (query) => {
             return new Promise(async (resolve, reject) => {
-                await dataCamp.find(query, { projection: { _id:0, firstname: 1, lastname: 1, username: 1, profile_pic: 1, } }).toArray((err, users) => {
+                await dataCamp.find(query, { projection: { _id:0, firstname: 1, lastname: 1, username: 1, profile_pic: 1, accStatus: 1 } }).toArray((err, users) => {
                     if (err) return reject(err)
                     return resolve(users)
                 })

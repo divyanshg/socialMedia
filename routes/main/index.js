@@ -17,24 +17,27 @@ router.get('/', checkAuthenticated, async (req, res) => {
 
     await user.getAll()
         .then(users => {
-
+            var people = []
             var posts = [];
             for (var i = 0; i < users.length; i++) {
-                if (users[i].id == req.user.id) {
-                    for (var j = 0; j < users[i].posts.length; j++) {
-                        users[i].posts[j].timeago = ta.ago(users[i].posts[j].createdAt);
-                        posts.push(users[i].posts[j]);
-                    }
-                } else if (req.user.following.find(u => u.id == users[i].id)) {
-                    for (var j = 0; j < users[i].posts.length; j++) {
-                        users[i].posts[j].timeago = ta.ago(users[i].posts[j].createdAt);
-                        posts.push(users[i].posts[j]);
+                if (users[i].accStatus != "DEACTIVATED") {
+                    people.push(users[i])
+                    if (users[i].id == req.user.id) {
+                        for (var j = 0; j < users[i].posts.length; j++) {
+                            users[i].posts[j].timeago = ta.ago(users[i].posts[j].createdAt);
+                            posts.push(users[i].posts[j]);
+                        }
+                    } else if (req.user.following.find(u => u.id == users[i].id)) {
+                        for (var j = 0; j < users[i].posts.length; j++) {
+                            users[i].posts[j].timeago = ta.ago(users[i].posts[j].createdAt);
+                            posts.push(users[i].posts[j]);
+                        }
                     }
                 }
             }
             res.render('home/index.ejs', {
                 user: req.user,
-                people: users,
+                people,
                 posts: posts.reverse()
             })
         })
@@ -54,11 +57,15 @@ router.get('/u/:username', checkAuthenticated, async (req, res) => {
         await user.find(req.params.username)
             .then(user => {
                 delete user.password;
-                res.render('home/profile.ejs', {
-                    user: req.user,
-                    profileuser: user,
-                    posts: user.posts.reverse()
-                })
+                if (user.accStatus != "DEACTIVATED") {
+                    res.render('home/profile.ejs', {
+                        user: req.user,
+                        profileuser: user,
+                        posts: user.posts.reverse()
+                    })
+                } else {
+                    res.sendStatus(404)
+                }
             })
     }
 })
@@ -100,6 +107,5 @@ router.post('/post', checkAuthenticated, async (req, res) => {
             res.redirect('/')
         })
 })
-
 
 module.exports = router

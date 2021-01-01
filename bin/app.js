@@ -7,6 +7,7 @@ const session = require('express-session')
 
 const mainRouter = require('../routes/main/index')
 const v1_apiRouter = require('../routes/api/v1')
+const settingsRouter = require('../routes/settings/index')
 
 const methodOverride = require('method-override')
 var fileupload = require("express-fileupload");
@@ -31,6 +32,7 @@ app.use(fileupload());
 app.use('/accounts', require('../routes/root'))
 app.use('/', mainRouter)
 app.use('/api/v1/', v1_apiRouter)
+app.use('/settings', settingsRouter)
 app.use('/s', express.static('public'))
 
 app.listen(80, () => {

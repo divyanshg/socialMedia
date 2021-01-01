@@ -1,4 +1,4 @@
-<title>Babble</title>
+<title><% if(user.notifications.length != 0) { %>(<%= user.notifications.length %>) <% } %>Babble</title>
 <%- include('../headers') %>
 
 <body class="bg-white w-full">
@@ -22,8 +22,7 @@
 
                     <form method="POST" enctype="multipart/form-data" action="/post" class="w-full">
                         <div class="p-3 w-full flex">
-                            <img src="<%= user.profile_pic %>"
-                                alt="" class="h-10 w-10 rounded-full">
+                            <img src="<%= user.profile_pic %>" alt="" class="h-10 w-10 rounded-full">
                             <input type="text" name="caption" id="postCont"
                                 class="caption w-full rounded focus:outline-none foucs:border-b border-gray-200 h-10 text-base px-4 py-2 resize-none block theme-bg"
                                 placeholder="Whats Happening?" />
@@ -46,7 +45,7 @@
                                 style="height: 40px;padding-top: 6px;">Post</button>
 
                         </div>
-
+                        <img src="" alt="" id="img-prev" class="w-full h-auto hidden">
                     </form>
                     <div class="postsContainer w-full h-auto">
                         <%- include('./posts.ejs') %>
@@ -64,6 +63,25 @@
     <script>
         document.querySelector("#upImage").onclick = () => {
             $("#upImageModal").show()
+        }
+        document.querySelector("#photo").onchange = (evt) => {
+            var tgt = evt.target || window.event.srcElement,
+                files = tgt.files;
+
+            // FileReader support
+            if (FileReader && files && files.length) {
+                var fr = new FileReader();
+                fr.onload = function () {
+                    document.getElementById("img-prev").src = fr.result;
+                }
+                fr.readAsDataURL(files[0]);
+            }
+
+            // Not supported
+            else {
+                // fallback -- perhaps submit the input to an iframe and temporarily store
+                // them on the server until the user's session ends.
+            }
         }
     </script>
 </body>

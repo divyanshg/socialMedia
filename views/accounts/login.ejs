@@ -33,7 +33,7 @@
         <div class="rightPanel w-full h-full p-4">
             <div class="formsContainer mx-auto w-1/2 h-full py-10">
                 <div
-                    class="loginContainer bg-white rounded-xl shadow-lg w-full p-10 animate__animated animate__fadeInDown">
+                    class="loginContainer bg-white rounded-xl shadow-lg w-full p-10">
                     <h1 class="font-bold text-4xl flex">Log In <span class="text-sm text-red-400 mt-5 mx-4">
                             <% if(messages.error) { %>
                             <%= messages.error %>
@@ -61,7 +61,7 @@
                 </div>
 
                 <div
-                    class="signupContainer bg-white rounded-xl shadow-lg w-full p-10 mt-20 animate__animated animate__fadeInUp">
+                    class="signupContainer bg-white rounded-xl shadow-lg w-full p-10 mt-20">
                     <h1 class="font-bold text-4xl">Sign Up</h1>
                     <h1 class="font-bold text-gray-900 text-3xl">It's quick and easy.</h1>
                     <form action="/accounts/register" method="POST" class="w-full mt-5">

@@ -10,7 +10,7 @@
     </div>
     <% if(typeof people == 'undefined') return %>
     <% if(people.length != 0){ %>
-    <div class="py-2 px-2 w-full pb-0 text-left">
+    <div class="peoples py-2 px-2 w-full pb-0 text-left">
         <div class="flex flex-wrap theme-gray-200 rounded-lg h-auto">
             <div class="w-full border-b theme-border-gray-300 pb-1">
                 <div class="inner py-2">
@@ -67,7 +67,7 @@
         if ($(".search").val().length != 0) {
             $(".search").removeClass("rounded-full").addClass("rounded-t-lg border-b border-gray-300")
             $(".searchCont").show()
-        }else{
+        } else {
             $(".search").removeClass("rounded-t-lg border-b border-gray-300").addClass("rounded-full")
             $(".searchCont").hide()
         }

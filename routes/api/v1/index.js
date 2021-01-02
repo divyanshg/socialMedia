@@ -190,7 +190,7 @@ router.post('/comment/:postId/:author', checkAuthenticated, async (req, res) => 
         }
     })
 
-    const notify = notifications.createNew(req.params.userid, {
+    const notify = notifications.createNew(req.params.author, {
         msg: `${req.user.username} commented on your post.`
     }, dataCamp)
 

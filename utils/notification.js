@@ -1,7 +1,11 @@
 module.exports = {
     createNew: async (id, body, dataCamp) => {
         await dataCamp.updateOne({
-            id
+            $or: [{
+                id
+            }, {
+                username: id
+            }]
         }, {
             $addToSet: {
                 notifications: body

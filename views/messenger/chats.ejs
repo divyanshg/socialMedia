@@ -1,0 +1,24 @@
+<div class="header w-full h-20 border-b shadow flex p-5">
+    <img src="<%= user.profile_pic %>" alt="" class="rounded-full w-10 h-10">
+    <span class="font-semibold mx-2 my-1 text-lg"><%= rooms.chat_rooms[0].recv.name %></span>
+</div>
+<div class="chats w-full h-full p-1 overflow-y-auto">
+    <% rooms.chat_rooms[0].messages.forEach(msg => { %>
+    <% if(msg.sender == user.username) { %>
+    <div class="msg w-full px-2 border-l-4 border-blue-400 bg-gray-200 my-1 h-auto">
+        <%= msg.text %>
+    </div>
+    <% }else{ %>
+    <div class="msg w-full px-2 border-l-4 border-red-400 bg-gray-200 my-1 h-auto">
+        <%= msg.text %>
+    </div>
+    <% } %>
+    <% }) %>
+</div>
+<div class="btm-bar bottom-0 absolute h-12 w-full py-1 px-2">
+    <input type="text" name="msg" class="msgInp w-full rounded-full px-4 py-1 bg-gray-300 focus:outline-none" placeholder="Aa">
+</div>
+<input type="hidden" id="uname" value="<%= user.username %>">
+<input type="hidden" id="recv" value="<%= rooms.chat_rooms[0].recv.username %>">
+<script src="/socket.io/socket.io.js"></script>
+<script src="/s/javascript/chats.js"></script>

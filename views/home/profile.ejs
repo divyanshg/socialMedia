@@ -41,7 +41,8 @@
                             </h1>
                             <h1 class="text-sm text-gray-500"><%= profileuser.posts.length %> Posts</h1>
                             <% if(profileuser.id == user.id) { %>
-                            <a href="/settings/account" class="float-right -mt-8 pb-2 h-5 w-5 cursor-pointer hover:text-indigo-500"
+                            <a href="/settings/account"
+                                class="float-right -mt-8 pb-2 h-5 w-5 cursor-pointer hover:text-indigo-500"
                                 title="Edit Profile">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor">
@@ -104,7 +105,11 @@
     <% } %>
     <%- include('../modals/followers.ejs') %>
     <%- include('../modals/followings.ejs') %>
+    
+    <%- include('./postComment.ejs') %>
 </body>
+
+<script src="/s/javascript/comment.js"></script>
 <script>
     document.querySelector('#goBack').onclick = () => {
         window.history.back();

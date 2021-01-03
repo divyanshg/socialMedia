@@ -27,11 +27,11 @@ module.exports = () => {
                     dob: req.body.dob,
                     following: []
                 })
-                .then((resp) => res.redirect("/login"))
-                .catch((e) => res.redirect('/login'))
+                .then((resp) => res.redirect("accounts/login.ejs"))
+                .catch((e) => res.render('accounts/login.ejs', { messages: { error: e } }))
                 
             } catch {
-                res.redirect('/login')
+                res.render('accounts/login.ejs', { messages: { error: "Internal Server Error - 02" } })
             }
         }
     }

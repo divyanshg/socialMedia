@@ -20,8 +20,14 @@ module.exports = () => {
                 }, (err, user) => {
                     if (err) return reject(err)
                     var reactivator;
-                    if(user != null && user.accStatus == "DEACTIVATED") {
-                        reactivator = dataCamp.updateOne({ id: user.id }, { $set: { accStatus: "" } })
+                    if (user != null && user.accStatus == "DEACTIVATED") {
+                        reactivator = dataCamp.updateOne({
+                            id: user.id
+                        }, {
+                            $set: {
+                                accStatus: ""
+                            }
+                        })
                     }
                     Promise.all([reactivator])
                     return resolve(user)
@@ -41,9 +47,21 @@ module.exports = () => {
         },
         save: (user) => {
             return new Promise(async (resolve, reject) => {
-                await dataCamp.insertOne(user, (err, resp) => {
+                await dataCamp.findOne({
+                    $or: [
+                        { email: user.email },
+                        { username: user.username }
+                    ]
+                }, async (err, u) => {
                     if (err) return reject(err)
-                    resolve(resp)
+                    if (u == null) {
+                        await dataCamp.insertOne(user, (err, resp) => {
+                            if (err) return reject(err)
+                            resolve(resp)
+                        })
+                    }else{
+                        reject("Account already exists")
+                    }
                 })
             })
         },
@@ -62,7 +80,16 @@ module.exports = () => {
         },
         findByQuery: (query) => {
             return new Promise(async (resolve, reject) => {
-                await dataCamp.find(query, { projection: { _id:0, firstname: 1, lastname: 1, username: 1, profile_pic: 1, accStatus: 1 } }).toArray((err, users) => {
+                await dataCamp.find(query, {
+                    projection: {
+                        _id: 0,
+                        firstname: 1,
+                        lastname: 1,
+                        username: 1,
+                        profile_pic: 1,
+                        accStatus: 1
+                    }
+                }).toArray((err, users) => {
                     if (err) return reject(err)
                     return resolve(users)
                 })

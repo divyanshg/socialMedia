@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Reset</title>
+    <%- include('../headers.ejs') %>
+</head>
+<body class="bg-indigo-500">
+    <div class="absolute w-full h-full flex">
+        <div class="w-1/2 left-panel bg-white h-full p-4">
+            <div class="header py-4 px-10 w-full h-16">
+                <img class="h-12 w-12" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg"
+                    alt="Workflow">
+            </div>
+            <div class="bdy p-4 w-full flex mt-4">
+                <h1 class="text-5xl text-black font-bold w-full p-10">
+                    Follow a few simple steps to reset your password
+                </h1>
+            </div>
+        </div>
+        <div class="rightPanel w-full h-full p-4">
+            <div class="formsContainer mx-auto w-1/2 h-full py-10">
+                <div
+                    class="loginContainer bg-white rounded-xl shadow-lg w-full p-10">
+                    <h1 class="font-bold text-4xl flex">Reset Password <span class="text-sm text-red-400 mt-5 mx-4">
+                            <% if(messages.error) { %>
+                            <%= messages.error %>
+                            <% } %>
+                        </span> </h1>
+                    <form action="/accounts/password" method="POST" class="w-full mt-4">
+                        <div class="inputContainer flex w-full mb-5">
+                            <input type="text" name="email" id="" placeholder="Email or Username"
+                                class="p-3 rounded-lg bg-gray-200 w-full mr-2" required>
+                        </div>
+                        <div class="formActions flex w-full">
+                            <div class="w-1/2">
+                                <input type="submit" value="Proceed"
+                                    class="py-2 px-6 w-1/2 bg-indigo-500 text-white font-semibold rounded-lg">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -20,7 +20,7 @@ module.exports = () => {
                 }, (err, user) => {
                     if (err) return reject(err)
                     var reactivator;
-                    if(user.accStatus == "DEACTIVATED") {
+                    if(user != null && user.accStatus == "DEACTIVATED") {
                         reactivator = dataCamp.updateOne({ id: user.id }, { $set: { accStatus: "" } })
                     }
                     Promise.all([reactivator])

@@ -131,8 +131,9 @@ router.post('/removelike/:postId/:uid', checkAuthenticated, async (req, res) => 
 
 router.post('/new_profile_picture', checkAuthenticated, async (req, res) => {
     var pp = req.files.pp
-    await pp.mv(`./public/profile_pictures/${req.user.id}.png`, (err, result) => {
+    await pp.mv(`./public/profile_pictures/${req.user.id}.png`, async (err, result) => {
         if (err) throw err
+        await dataCamp.updateOne({id:req.user.id}, { $set: { profile_pic: `/s/profile_pictures/${req.user.id}.png` } })
         return res.redirect('/u/' + req.user.username)
     })
 })

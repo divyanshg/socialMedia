@@ -7,6 +7,8 @@ const {
 const notifications = require('../../../utils/notification')
 const users = require('../../../models/users')()
 
+const { v4: uuidv4 } = require('uuid');
+
 var dataCamp = require('../../../models/database')
 dataCamp.connect()
     .then(() => dataCamp = dataCamp.get().collection('users'))
@@ -231,6 +233,37 @@ router.post('/updateProfile', checkAuthenticated, async (req, res) => {
         if (err) res.sendStatus(500)
         res.redirect('/settings/account')
     })
+})
+
+router.post('/new_room/:withid/:uname', checkAuthenticated, async (req, res) => {
+    var user = await users.find(req.params.uname)
+    const roomId = uuidv4()
+    const croom = {
+        recv: {
+            username: req.params.uname,
+            uid: req.params.withid,
+            name: `${user.firstname} ${user.lastname}`
+        },
+        id: roomId,
+        messages: []
+    }
+
+    const uroom = {
+        recv: {
+            username: req.user.username,
+            uid: req.user.id,
+            name: `${req.user.firstname} ${req.user.lastname}`
+        },
+        id: roomId,
+        messages: []
+    }
+
+    const pr1=dataCamp.updateOne({ id:req.user.id }, { $addToSet: { chat_rooms: croom } })
+    const pr2=dataCamp.updateOne({ id: req.params.withid }, { $addToSet: { chat_rooms: uroom } })
+
+    Promise.all([pr1, pr2])
+
+    res.redirect('/messenger/'+roomId)
 })
 
 module.exports = router

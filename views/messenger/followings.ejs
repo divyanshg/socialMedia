@@ -40,7 +40,7 @@
                             <% } else { %>
                             <ul class="w-full">
                                 <% user.following.forEach(follower => { %>
-                                <li id="flwing_<%= follower.id %>" class="w-full p-2 py-3 border-b bborder-gray-300 flex followings">
+                                <li id="flwing_<%= follower.id %>_<%= follower.name %>" class="w-full p-2 py-3 border-b bborder-gray-300 flex followings">
                                     <img src="/s/profile_pictures/<%= follower.id %>.png" alt="" class="rounded-full w-10 h-10">
                                     <div class="w-full mx-2 mt-1 font-semibold text-lg">
                                         <%= follower.name %>

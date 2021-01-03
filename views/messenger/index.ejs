@@ -20,7 +20,7 @@
             <div class="rooms w-full bg-white mt-2">
                 <% user.chat_rooms.forEach(room => { %>
                 <a href="/messenger/<%= room.id %>" class="w-full p-2 flex h-16 rounded-lg hover:bg-gray-200 cursor-pointer">
-                    <img src="<%= user.profile_pic %>" alt="" class="rounded-full h-12 w-12">
+                    <img src="/s/profile_pictures/<%= room.recv.uid %>.png" alt="" class="rounded-full h-12 w-12">
                     <%= room.recv.name %>
                 </a>
                 <% }) %>
@@ -45,7 +45,18 @@
     })
 
     function createRoom(info){
-        console.log(info.id.split("_")[1])
+        fetch(`/api/v1/new_room/${info.id.split('_')[1]}/${info.id.split('_')[2]}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => {
+                window.location.reload()
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
     }
 </script>
 </html>
